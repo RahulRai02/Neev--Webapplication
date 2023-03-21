@@ -1,7 +1,20 @@
-show databases;
--- drop database neev2;
+-- drop database NEEV2;
 create database NEEV2;
 use NEEV2;
+
+create table admin_password(
+	EmployeeID varchar(8) primary key,
+    EmployeePassword varchar(64)
+);
+
+create table staff_password(
+	EmployeeID varchar(8) primary key,
+    EmployeePassword varchar(64)
+);
+
+insert into admin_password(EmployeeID,EmployeePassword)
+values ("1","GFfK65EW785wzCKaAA");
+
 
 -- done
 create table Trainers (
@@ -38,6 +51,9 @@ year_of_joining date not null,
 year_of_leaving date default null,
 reason_of_leaving text default null
 );
+
+INSERT INTO Teams (employee_id, name, email_id, salary, position, year_of_joining, year_of_leaving, reason_of_leaving) VALUES
+('1', 'Ravi Kumar', 'ravi.kumar@example.com', 50000, 'Admin', '2015-01-01', null, null);
 
 create table Projects (
 event_name varchar(50),
@@ -113,7 +129,7 @@ item_name varchar(50),
 quantity int,
 amount int,
 primary key (event_name, start_date, item_name, quantity, amount),
-foreign key (event_name, start_date) 
+foreign key (event_name, start_date)
 references Projects(event_name, start_date) on delete cascade on update cascade
 );
 
@@ -123,7 +139,7 @@ start_date date,
 description varchar(255),
 amount int,
 primary key (event_name, start_date, description, amount),
-foreign key (event_name, start_date) 
+foreign key (event_name, start_date)
 references Projects(event_name, start_date) on delete cascade on update cascade
 );
 
@@ -142,7 +158,7 @@ foreign key (aadhar_id) references Beneficiary(aadhar_id) on delete cascade on u
 );
 
 
-# Relation Tables 
+# Relation Tables
 
 create table TeamPhone (
 employee_id varchar(20) not null,
@@ -162,7 +178,7 @@ start_date date,
 role varchar(50) not null,
 primary key (employee_id, event_name, start_date),
 foreign key(employee_id) references Teams(employee_id) on delete cascade on update cascade,
-foreign key(event_name, start_date) references Projects(event_name, start_date) on delete cascade 
+foreign key(event_name, start_date) references Projects(event_name, start_date) on delete cascade
 on update cascade
 );
 
@@ -172,7 +188,7 @@ event_name varchar(50),
 start_date date,
 primary key (email_id, event_name, start_date),
 foreign key(email_id) references Funding(email_id) on delete cascade on update cascade,
-foreign key(event_name, start_date) references Projects(event_name, start_date) on delete cascade 
+foreign key(event_name, start_date) references Projects(event_name, start_date) on delete cascade
 on update cascade
 );
 
@@ -182,7 +198,7 @@ event_name varchar(50),
 start_date date,
 primary key (email_id, event_name, start_date),
 foreign key(email_id) references Volunteers(email_id) on delete cascade on update cascade,
-foreign key(event_name, start_date) references Projects(event_name, start_date) on delete cascade 
+foreign key(event_name, start_date) references Projects(event_name, start_date) on delete cascade
 on update cascade
 );
 
@@ -207,7 +223,7 @@ on update cascade
 );
 
 create table participants(
-aadhar_id bigint, 
+aadhar_id bigint,
 event_name varchar(50),
 start_date date,
 primary key (aadhar_id, event_name, start_date),
@@ -217,7 +233,7 @@ on update cascade
 );
 
 create table TrainerBeneficiary(
-aadhar_id bigint, 
+aadhar_id bigint,
 email_id varchar(50),
 primary key (aadhar_id),
 foreign key(aadhar_id) references Beneficiary(aadhar_id) on delete cascade on update cascade,
@@ -226,10 +242,10 @@ on update cascade
 );
 
 create table assessment(
-aadhar_id bigint, 
+aadhar_id bigint,
 event_name varchar(50),
 start_date date,
-Date date NOT NULL, 
+Date date NOT NULL,
 present_or_absent enum('Present', 'Absent') NOT NULL,
 primary key (aadhar_id),
 foreign key(aadhar_id) references Beneficiary(aadhar_id) on delete cascade on update cascade,
@@ -238,7 +254,7 @@ on update cascade
 );
 
 create table belongs(
-aadhar_id bigint, 
+aadhar_id bigint,
 pincode int,
 primary key (aadhar_id),
 foreign key(aadhar_id) references Beneficiary(aadhar_id) on delete cascade on update cascade,
@@ -249,27 +265,22 @@ on update cascade
 
 
 
-
 # Data Population
 #Adding dummy values to Beneficiary
 INSERT INTO Beneficiary (aadhar_id, name, date_of_birth, gender, marital_status, education, photo, employed, photo_caption)
 VALUES
-(123456789012, 'Asha Sharma', '1980-05-12', 'Female', 'Married', 'Master of Business Administration', NULL, 'Yes', 'Photo of Asha Sharma'),
-(234567890123, 'Rahul Singh', '1995-08-02', 'Male', 'Unmarried', 'Bachelor of Engineering', NULL, 'Yes', 'Photo of Rahul Singh'),
-(345678901234, 'Priya Patel', '1988-12-25', 'Female', 'Married', 'Doctor of Medicine', NULL, 'No', NULL),
-(456789012345, 'Rajesh Kumar', '1976-09-18', 'Male', 'Married', 'Bachelor of Science', NULL, 'Yes', 'Photo of Rajesh Kumar'),
-(567890123456, 'Sneha Gupta', '1992-04-01', 'Female', 'Unmarried', 'Master of Computer Applications', NULL, 'No', NULL),
-(678901234567, 'Vikram Singh', '1985-06-21', 'Male', 'Married', 'Bachelor of Commerce', NULL, 'Yes', 'Photo of Vikram Singh'),
-(789012345678, 'Anjali Reddy', '1990-03-15', 'Female', 'Unmarried', 'Bachelor of Arts', NULL, 'No', NULL),
-(890123456789, 'Amit Sharma', '1983-11-08', 'Male', 'Married', 'Master of Science', NULL, 'Yes', 'Photo of Amit Sharma'),
-(901234567890, 'Shalini Verma', '1987-07-14', 'Female', 'Married', 'Bachelor of Business Administration', NULL, 'No', NULL),
-(123450987654, 'Sanjay Kumar', '1979-01-31', 'Male', 'Married', 'Master of Arts', NULL, 'Yes', 'Photo of Sanjay Kumar');
+(123456789011, 'Asha Sharma', '1980-05-12', 'Female', 'Married', 'Master of Business Administration', 'https://example.com/photo1.jpg', 'Yes', 'Photo of Asha Sharma'),
+(234567890121, 'Rahul Singh', '1995-08-02', 'Male', 'Unmarried', 'Bachelor of Engineering', 'https://example.com/photo1.jpg', 'Yes', 'Photo of Rahul Singh'),
+(345678901231, 'Priya Patel', '1988-12-25', 'Female', 'Married', 'Doctor of Medicine', 'https://example.com/photo1.jpg', 'No', NULL),
+(456789012341, 'Rajesh Kumar', '1976-09-18', 'Male', 'Married', 'Bachelor of Science', 'https://example.com/photo1.jpg', 'Yes', 'Photo of Rajesh Kumar'),
+(567890123451, 'Sneha Gupta', '1992-04-01', 'Female', 'Unmarried', 'Master of Computer Applications', 'https://example.com/photo1.jpg', 'No', NULL),
+(678901234561, 'Vikram Singh', '1985-06-21', 'Male', 'Married', 'Bachelor of Commerce', 'https://example.com/photo1.jpg', 'Yes', 'Photo of Vikram Singh'),
+(789012345671, 'Anjali Reddy', '1990-03-15', 'Female', 'Unmarried', 'Bachelor of Arts', 'https://example.com/photo1.jpg', 'No', NULL),
+(890123456781, 'Amit Sharma', '1983-11-08', 'Male', 'Married', 'Master of Science', 'https://example.com/photo1.jpg', 'Yes', 'Photo of Amit Sharma'),
+(901234567891, 'Shalini Verma', '1987-07-14', 'Female', 'Married', 'Bachelor of Business Administration', NULL, 'No', NULL),
+(123450987651, 'Sanjay Kumar', '1979-01-31', 'Male', 'Married', 'Master of Arts', 'https://example.com/photo1.jpg', 'Yes', 'Photo of Sanjay Kumar');
 
-#Imported other entries through .csv file in Beneficiary
-
-
-
-
+ 
 #Adding dummy values to Funding
 INSERT INTO Funding (email_id, amount, funder_name, date) VALUES
 ('abc@gmail.com', 50000, 'Rohit Sharma', '2022-02-01'),
@@ -282,19 +293,6 @@ INSERT INTO Funding (email_id, amount, funder_name, date) VALUES
 ('vwx@gmail.com', 80000, 'Anjali Sharma', '2022-02-20'),
 ('yz@gmail.com', 20000, 'Suresh Patel', '2022-02-22'),
 ('abc1@gmail.com', 40000, 'Manisha Singh', '2022-02-25');
-
-#Adding dummy values to teams
-INSERT INTO Teams (employee_id, name, email_id, salary, position, year_of_joining, year_of_leaving, reason_of_leaving) VALUES
-('E001', 'Ravi Kumar', 'ravi.kumar@example.com', 50000, 'Manager', '2015-01-01', null, null),
-('E002', 'Priya Sharma', 'priya.sharma@example.com', 40000, 'Developer', '2016-02-01', null, null),
-('E003', 'Amit Singh', 'amit.singh@example.com', 45000, 'Developer', '2017-03-01', null, null),
-('E004', 'Neha Gupta', 'neha.gupta@example.com', 55000, 'Designer', '2018-04-01', null, null),
-('E005', 'Rajesh Khanna', 'rajesh.khanna@example.com', 60000, 'Manager', '2019-05-01', null, null),
-('E006', 'Anjali Verma', 'anjali.verma@example.com', 35000, 'Developer', '2020-06-01', null, null),
-('E007', 'Suresh Menon', 'suresh.menon@example.com', 45000, 'Developer', '2021-07-01', null, null),
-('E008', 'Nisha Rawat', 'nisha.rawat@example.com', 50000, 'Designer', '2014-08-01', '2022-08-31', 'Personal reasons'),
-('E009', 'Rahul Singhania', 'rahul.singhania@example.com', 60000, 'Manager', '2015-09-01', null, null),
-('E010', 'Komal Agarwal', 'komal.agarwal@example.com', 40000, 'Developer', '2016-10-01', '2022-02-28', 'Better opportunity');
 
 
 #Adding dummy values to projects 
@@ -333,18 +331,6 @@ VALUES
     ('Project B', '2022-02-01', 'E:/6th Sem/OneDrive - iitgn.ac.in/6th Sem/dbms/Assignment2/image1.jpg', NULL);
 
 
-#Adding dummy values to Venue
-INSERT INTO Venue (venue_id, place, pincode, district, state) VALUES
-('VEN001', 'Maharashtra Nagar', 400010, 'Mumbai', 'Maharashtra'),
-('VEN002', 'Shalimar Bagh', 110088, 'North Delhi', 'Delhi'),
-('VEN003', 'Park Street', 700016, 'Kolkata', 'West Bengal'),
-('VEN004', 'Whitefield', 560066, 'Bangalore', 'Karnataka'),
-('VEN005', 'Banjara Hills', 500034, 'Hyderabad', 'Telangana'),
-('VEN006', 'Gomti Nagar', 226010, 'Lucknow', 'Uttar Pradesh'),
-('VEN007', 'Alwarpet', 600018, 'Chennai', 'Tamil Nadu'),
-('VEN008', 'Bodakdev', 380054, 'Ahmedabad', 'Gujarat'),
-('VEN009', 'Race Course', 390007, 'Vadodara', 'Gujarat'),
-('VEN010', 'Ravipuram', 682016, 'Kochi', 'Kerala');
 
 
 
@@ -435,67 +421,70 @@ VALUES
 ('trainer10@gmail.com', 1234567890);
 
 
-#Adding dummy values to BeneficiaryPhoneEntity
+-- #Adding dummy values to BeneficiaryPhoneEntity
+-- INSERT INTO BeneficiaryPhoneEntity (aadhar_id, phone_number)
+-- VALUES
+-- (123456789012, 9876543210),
+-- (234567890123, 8765432109),
+-- (345678901234, 7654321098),
+-- (456789012345, 6543210987),
+-- (567890123456, 5432109876),
+-- (678901234567, 4321098765),
+-- (789012345678, 3210987654),
+-- (890123456789, 2109876543),
+-- (901234567890, 1098765432),
+-- (123450987654, 1234567890);
 INSERT INTO BeneficiaryPhoneEntity (aadhar_id, phone_number)
-VALUES
-(123456789012, 9876543210),
-(234567890123, 8765432109),
-(345678901234, 7654321098),
-(456789012345, 6543210987),
-(567890123456, 5432109876),
-(678901234567, 4321098765),
-(789012345678, 3210987654),
-(890123456789, 2109876543),
-(901234567890, 1098765432),
-(123450987654, 1234567890);
+VALUES 
+(123450987651, 9876543210);
 
 
 #Adding dummy values to EmployeePhoneEntity
-INSERT INTO TeamPhone (employee_id, phone_number, location) VALUES
-('E001', 9876543210, 'Delhi'),
-('E001', 9898989898, 'Mumbai'),
-('E002', 8765432109, 'Kolkata'),
-('E003', 7894561230, 'Bangalore'),
-('E003', 9865327410, 'Chennai'),
-('E004', 9876543210, 'Pune'),
-('E005', 8765432109, 'Hyderabad'),
-('E006', 7894561230, 'Mumbai'),
-('E007', 9865327410, 'Chennai'),
-('E010', 9876543210, 'Delhi');
+-- INSERT INTO TeamPhone (employee_id, phone_number, location) VALUES
+-- ('E001', 9876543210, 'Delhi'),
+-- ('E001', 9898989898, 'Mumbai'),
+-- ('E002', 8765432109, 'Kolkata'),
+-- ('E003', 7894561230, 'Bangalore'),
+-- ('E003', 9865327410, 'Chennai'),
+-- ('E004', 9876543210, 'Pune'),
+-- ('E005', 8765432109, 'Hyderabad'),
+-- ('E006', 7894561230, 'Mumbai'),
+-- ('E007', 9865327410, 'Chennai'),
+-- ('E010', 9876543210, 'Delhi');
 
 
 -- Relational Tables 
 
 #Adding dummy values to Organize
-INSERT INTO Organize (employee_id, event_name, start_date, role)
-VALUES 
-('E001', 'Project A', '2022-01-01', 'Manager'),
-('E002', 'Project A', '2022-01-01', 'Developer'),
-('E003', 'Project A', '2022-01-01', 'Developer'),
-('E004', 'Project A', '2022-01-01', 'Designer'),
-('E005', 'Project B', '2022-02-01', 'Manager'),
-('E006', 'Project B', '2022-02-01', 'Developer'),
-('E007', 'Project B', '2022-02-01', 'Developer'),
-('E008', 'Project C', '2022-03-01', 'Designer'),
-('E009', 'Project D', '2022-04-01', 'Manager'),
-('E010', 'Project D', '2022-04-01', 'Developer'),
-('E001', 'Project E', '2022-05-01', 'Manager'),
-('E002', 'Project E', '2022-05-01', 'Developer'),
-('E003', 'Project E', '2022-05-01', 'Developer'),
-('E004', 'Project E', '2022-05-01', 'Designer'),
-('E005', 'Project F', '2022-06-01', 'Manager'),
-('E006', 'Project F', '2022-06-01', 'Developer'),
-('E007', 'Project F', '2022-06-01', 'Developer'),
-('E008', 'Project G', '2022-07-01', 'Designer'),
-('E009', 'Project H', '2022-08-01', 'Manager'),
-('E010', 'Project H', '2022-08-01', 'Developer'),
-('E001', 'Project I', '2022-09-01', 'Manager'),
-('E002', 'Project I', '2022-09-01', 'Developer'),
-('E003', 'Project I', '2022-09-01', 'Developer'),
-('E004', 'Project I', '2022-09-01', 'Designer'),
-('E005', 'Project J', '2022-10-01', 'Manager'),
-('E006', 'Project J', '2022-10-01', 'Developer'),
-('E007', 'Project J', '2022-10-01', 'Developer');
+-- INSERT INTO Organize (employee_id, event_name, start_date, role)
+-- VALUES 
+-- ('E001', 'Project A', '2022-01-01', 'Manager'),
+-- ('E002', 'Project A', '2022-01-01', 'Developer'),
+-- ('E003', 'Project A', '2022-01-01', 'Developer'),
+-- ('E004', 'Project A', '2022-01-01', 'Designer'),
+-- ('E005', 'Project B', '2022-02-01', 'Manager'),
+-- ('E006', 'Project B', '2022-02-01', 'Developer'),
+-- ('E007', 'Project B', '2022-02-01', 'Developer'),
+-- ('E008', 'Project C', '2022-03-01', 'Designer'),
+-- ('E009', 'Project D', '2022-04-01', 'Manager'),
+-- ('E010', 'Project D', '2022-04-01', 'Developer'),
+-- ('E001', 'Project E', '2022-05-01', 'Manager'),
+-- ('E002', 'Project E', '2022-05-01', 'Developer'),
+-- ('E003', 'Project E', '2022-05-01', 'Developer'),
+-- ('E004', 'Project E', '2022-05-01', 'Designer'),
+-- ('E005', 'Project F', '2022-06-01', 'Manager'),
+-- ('E006', 'Project F', '2022-06-01', 'Developer'),
+-- ('E007', 'Project F', '2022-06-01', 'Developer'),
+-- ('E008', 'Project G', '2022-07-01', 'Designer'),
+-- ('E009', 'Project H', '2022-08-01', 'Manager'),
+-- ('E010', 'Project H', '2022-08-01', 'Developer'),
+-- ('E001', 'Project I', '2022-09-01', 'Manager'),
+-- ('E002', 'Project I', '2022-09-01', 'Developer'),
+-- ('E003', 'Project I', '2022-09-01', 'Developer'),
+-- ('E004', 'Project I', '2022-09-01', 'Designer'),
+-- ('E005', 'Project J', '2022-10-01', 'Manager'),
+-- ('E006', 'Project J', '2022-10-01', 'Developer'),
+-- ('E007', 'Project J', '2022-10-01', 'Developer');
 
 #Adding dummy values to Sponsors
 INSERT INTO sponsors (email_id, event_name, start_date)
@@ -552,18 +541,7 @@ INSERT INTO volunteering (email_id, event_name, start_date) VALUES
 ('neha.patel@example.com', 'Project J', '2022-10-01');
 
 #Adding dummy values to HeldAt
-INSERT INTO HeldAt (venue_id, event_name, start_date)
-VALUES
-('VEN001', 'Project A', '2022-01-01'),
-('VEN002', 'Project B', '2022-02-01'),
-('VEN003', 'Project C', '2022-03-01'),
-('VEN004', 'Project D', '2022-04-01'),
-('VEN005', 'Project E', '2022-05-01'),
-('VEN006', 'Project F', '2022-06-01'),
-('VEN007', 'Project G', '2022-07-01'),
-('VEN008', 'Project H', '2022-08-01'),
-('VEN009', 'Project I', '2022-09-01'),
-('VEN010', 'Project J', '2022-10-01');
+
 
 
 
@@ -591,94 +569,72 @@ VALUES
 
 
 
-#Adding dummy values to trains
+-- #Adding dummy values to trains
+-- INSERT INTO participants (aadhar_id, event_name, start_date)
+-- VALUES
+-- (123456789012, 'Project A', '2022-01-01'),
+-- (234567890123, 'Project A', '2022-01-01'),
+-- (345678901234, 'Project A', '2022-01-01'),
+-- (456789012345, 'Project B', '2022-02-01'),
+-- (567890123456, 'Project B', '2022-02-01'),
+-- (678901234567, 'Project C', '2022-03-01'),
+-- (789012345678, 'Project D', '2022-04-01'),
+-- (890123456789, 'Project E', '2022-05-01'),
+-- (901234567890, 'Project F', '2022-06-01'),
+-- (123450987654, 'Project G', '2022-07-01'),
+-- (234567890123, 'Project H', '2022-08-01'),
+-- (345678901234, 'Project H', '2022-08-01'),
+-- (456789012345, 'Project H', '2022-08-01'),
+-- (567890123456, 'Project I', '2022-09-01'),
+-- (678901234567, 'Project J', '2022-10-01'),
+-- (789012345678, 'Project J', '2022-10-01'),
+-- (123456789012, 'Project J', '2022-10-01'),
+-- (890123456789, 'Project J', '2022-10-01');
 INSERT INTO participants (aadhar_id, event_name, start_date)
 VALUES
-(123456789012, 'Project A', '2022-01-01'),
-(234567890123, 'Project A', '2022-01-01'),
-(345678901234, 'Project A', '2022-01-01'),
-(456789012345, 'Project B', '2022-02-01'),
-(567890123456, 'Project B', '2022-02-01'),
-(678901234567, 'Project C', '2022-03-01'),
-(789012345678, 'Project D', '2022-04-01'),
-(890123456789, 'Project E', '2022-05-01'),
-(901234567890, 'Project F', '2022-06-01'),
-(123450987654, 'Project G', '2022-07-01'),
-(234567890123, 'Project H', '2022-08-01'),
-(345678901234, 'Project H', '2022-08-01'),
-(456789012345, 'Project H', '2022-08-01'),
-(567890123456, 'Project I', '2022-09-01'),
-(678901234567, 'Project J', '2022-10-01'),
-(789012345678, 'Project J', '2022-10-01'),
-(123456789012, 'Project J', '2022-10-01'),
-(890123456789, 'Project J', '2022-10-01');
-
+(123450987651, 'Project A', '2022-01-01');
 
 #Adding dummy values to TrainerBeneficiary
-INSERT INTO TrainerBeneficiary (aadhar_id, email_id) VALUES
-(123456789012, 'trainer1@gmail.com'),
-(234567890123, 'trainer9@gmail.com'),
-(456789012345, 'trainer5@gmail.com'),
-(678901234567, 'trainer3@gmail.com'),
-(890123456789, 'trainer4@gmail.com'),
-(123450987654, 'trainer7@gmail.com');
+-- INSERT INTO TrainerBeneficiary (aadhar_id, email_id) VALUES
+-- (123456789012, 'trainer1@gmail.com'),
+-- (234567890123, 'trainer9@gmail.com'),
+-- (456789012345, 'trainer5@gmail.com'),
+-- (678901234567, 'trainer3@gmail.com'),
+-- (890123456789, 'trainer4@gmail.com'),
+-- (123450987654, 'trainer7@gmail.com');
 
 
-#Adding dummy values to assessment
-INSERT INTO assessment (aadhar_id, event_name, start_date, Date, present_or_absent)
-VALUES
-(123456789012, 'Project A', '2022-01-01', '2022-01-01', 'Present'),
-(234567890123, 'Project A', '2022-01-01', '2022-01-01', 'Absent'),
-(345678901234, 'Project B', '2022-02-01', '2022-02-01', 'Present'),
-(456789012345, 'Project B', '2022-02-01', '2022-02-01', 'Absent'),
-(567890123456, 'Project C', '2022-03-01', '2022-03-01', 'Present'),
-(678901234567, 'Project D', '2022-04-01', '2022-04-01', 'Present'),
-(789012345678, 'Project D', '2022-04-01', '2022-04-01', 'Absent'),
-(890123456789, 'Project E', '2022-05-01', '2022-05-01', 'Absent'),
-(901234567890, 'Project E', '2022-05-01', '2022-05-01', 'Present'),
-(123450987654, 'Project F', '2022-06-01', '2022-06-01', 'Present');
+-- #Adding dummy values to assessment
+-- INSERT INTO assessment (aadhar_id, event_name, start_date, Date, present_or_absent)
+-- VALUES
+-- (123456789012, 'Project A', '2022-01-01', '2022-01-01', 'Present'),
+-- (234567890123, 'Project A', '2022-01-01', '2022-01-01', 'Absent'),
+-- (345678901234, 'Project B', '2022-02-01', '2022-02-01', 'Present'),
+-- (456789012345, 'Project B', '2022-02-01', '2022-02-01', 'Absent'),
+-- (567890123456, 'Project C', '2022-03-01', '2022-03-01', 'Present'),
+-- (678901234567, 'Project D', '2022-04-01', '2022-04-01', 'Present'),
+-- (789012345678, 'Project D', '2022-04-01', '2022-04-01', 'Absent'),
+-- (890123456789, 'Project E', '2022-05-01', '2022-05-01', 'Absent'),
+-- (901234567890, 'Project E', '2022-05-01', '2022-05-01', 'Present'),
+-- (123450987654, 'Project F', '2022-06-01', '2022-06-01', 'Present');
 
 
 
-#Adding dummy values to belongs
+
+-- #Adding dummy values to belongs
+-- INSERT INTO belongs (aadhar_id, pincode)
+-- VALUES 
+-- (123456789012, 380002),
+-- (234567890123, 380005),
+-- (345678901234, 380002),
+-- (456789012345, 380004),
+-- (567890123456, 382330),
+-- (678901234567, 382350),
+-- (789012345678, 382340),
+-- (890123456789, 380002),
+-- (901234567890, 382340),
+-- (123450987654, 382330);
+
 INSERT INTO belongs (aadhar_id, pincode)
 VALUES 
-(123456789012, 380002),
-(234567890123, 380005),
-(345678901234, 380002),
-(456789012345, 380004),
-(567890123456, 382330),
-(678901234567, 382350),
-(789012345678, 382340),
-(890123456789, 380002),
-(901234567890, 382340),
-(123450987654, 382330);
-
-
--- All Entity sets and Relational Table Populated --
-
-
--- Indexing --
-
--- select * 
--- from Beneficiary 
--- where name = 'Amit';
-
--- select * 
--- from Beneficiary 
--- where name = "Amit" 
--- and gender = "Male";
-
-
--- select * 
--- from Beneficiary
--- where name = "Amit" and
--- date_of_birth 
--- between '1990-01-01' 
--- and '2000-12-31';
-
--- create index bene_name_index on Beneficiary (name);
-
-
--- -- Indexing Ends --
-
+(123450987651, 380001)
